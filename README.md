@@ -17,6 +17,11 @@ A Scrypted plugin for controlling Mitsubishi Heavy Industries (MHI) air conditio
 
 This plugin works with MHI air conditioners that have the WF-RAC WiFi module, typically configured via the **Smart M-Air** mobile app.
 
+Both firmware generations are supported, detected automatically per device:
+
+- **Legacy firmware** - plain HTTP on port 51443 (`/beaver/command`)
+- **WF-RAC-HTTPS firmware** (wireless v025 / MCU v200 and newer) - TLS on port 51443 (`/beaver/command/<command>`), using the unit's self-signed certificate
+
 ## Installation
 
 1. In Scrypted, go to **Plugins** > **Install Plugin**
@@ -84,6 +89,8 @@ Each AC unit also creates a child **Outdoor Temperature Sensor**.
 | Fan Only | Fan only (no heating/cooling) |
 | Dry | Dehumidifier mode |
 
+> Apple HomeKit only supports Off / Heat / Cool / Auto, so **Fan Only** and **Dry** are not selectable from the Home app (they show as Auto there). They are available from the Scrypted UI and other integrations.
+
 ## Fan Speeds
 
 | Level | Description |
@@ -109,7 +116,8 @@ Each AC unit also creates a child **Outdoor Temperature Sensor**.
 
 ## Notes
 
-- **Temperature decoding**: This plugin uses custom temperature formulas derived from real device data, as the lookup tables from the homebridge plugin did not work correctly with all firmware versions.
+- **Transport**: Each unit's transport is auto-detected - HTTPS first (newer WF-RAC-HTTPS firmware, self-signed certificate), falling back to plain HTTP (legacy firmware). No configuration needed. The same status-buffer encoding is used for both.
+- **Temperature decoding**: Indoor and outdoor temperatures use the manufacturer lookup tables. The local-API indoor reading can sit a few tenths of a degree off the Smart M-Air app.
 - **IP changes**: Re-running a scan will automatically update device IP addresses if they have changed (e.g., after DHCP renewal).
 
 ## Credits
