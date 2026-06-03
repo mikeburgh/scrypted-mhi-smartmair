@@ -1,0 +1,15 @@
+# The published package ships only the production bundle (dist/plugin.zip) plus
+# docs and package.json. Everything below is build input or dev tooling.
+.DS_Store
+node_modules/
+out/
+src/
+.github/
+.vscode/
+.claude/
+*.map
+*.tsbuildinfo
+dist/*.js
+dist/*.d.ts
+debug-tool.ts
+plan.md

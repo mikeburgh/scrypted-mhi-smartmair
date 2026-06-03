@@ -1,0 +1,44 @@
+name: Publish to npm
+
+# Publishes the plugin to npm on a version tag (e.g. v0.1.0), with provenance
+# via OIDC trusted publishing. No npm token is stored: configure the trusted
+# publisher once at https://www.npmjs.com/package/scrypted-mhi-smartmair/access
+# (GitHub Actions -> mikeburgh / scrypted-mhi-smartmair / workflow publish.yml).
+# The package must have been published once manually first (npm requires the
+# package to exist before a trusted publisher can be attached).
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # required for npm provenance / OIDC trusted publishing
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 22
+
+      - name: Upgrade npm (trusted publishing requires >= 11.5.1)
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      # npm publish runs prepublishOnly, which builds the production bundle
+      # (dist/plugin.zip). Provenance is generated from the OIDC token.
+      - name: Publish with provenance
+        run: npm publish --provenance --access public

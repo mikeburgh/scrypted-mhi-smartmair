@@ -1,9 +1,15 @@
 {
-  "name": "@scrypted/mhi-smartmair",
+  "name": "scrypted-mhi-smartmair",
   "version": "0.1.0",
   "description": "Scrypted plugin for Mitsubishi Heavy Industries WF-RAC air conditioners (Smart M-Air)",
-  "author": "Mike",
+  "author": "Mike Burgh",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikeburgh/scrypted-mhi-smartmair.git"
+  },
+  "homepage": "https://github.com/mikeburgh/scrypted-mhi-smartmair#readme",
+  "bugs": "https://github.com/mikeburgh/scrypted-mhi-smartmair/issues",
   "keywords": [
     "scrypted",
     "mhi",
@@ -33,7 +39,7 @@
       "DeviceProvider",
       "Settings"
     ],
-    "pluginId": "@scrypted/mhi-smartmair"
+    "pluginId": "scrypted-mhi-smartmair"
   },
   "dependencies": {
     "axios": "^1.7.2"
